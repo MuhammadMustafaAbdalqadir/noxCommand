@@ -10,6 +10,7 @@
 
 #define pp push_back
 #define nl printf("\n")
+#define pvec(a) { for (int TTT = 0; TTT < a.size(); TTT++) cout << a[TTT] << " "; }
 
 using namespace std;
 
@@ -49,14 +50,17 @@ string prune(string str){
     int start = 0, end = n - 1;
 
     for (int i = 0 ; i < n; i ++){
-        if (isalpha(str[i])){ start = i; break }
+        if (str[i] == '-'){ start = i+1; break; }
         else continue;
     }
 
     for (int i = (n - 1); i >= 0 ; i --){
-        if (str[i] == '.') { end = i; break; }
+        if (str[i] == '.') { end = i; str[i] = '&'; break; }
         else continue;
     }
+
+    for (int i = start; i <= end; i ++)
+        res.pp(str[i]);
 
     return res;
 }
@@ -71,7 +75,39 @@ vector < vector < string > > rfu(){
     user = clean(user);
     user = prune(user);
 
+    int n = user.length(), is_group = 0;
+    vector < string > v; string s;
 
+    for (int i = 0 ; i < n; i ++){
+        if (user[i] == ' '){
+            if (is_group){
+                s.pp(user[i]);
+            }
+            else {
+                if(!s.empty()) v.pp(s), s = "";
+            }
+        }
+        else if (user[i] == '<'){
+            if(!s.empty()) v.pp(s), s = "";
+            s.pp(user[i]);
+            is_group = 1;
+        }
+        else if (user[i] == '>'){
+            is_group = 0;
+            s.pp(user[i]);
+
+            if(!s.empty()) v.pp(s), s = "";
+        }
+        else if (user[i] == '&'){
+            if(!s.empty()) v.pp(s), s = "";
+            if (!v.empty()) res.pp(v), v.clear();
+        }
+        else {
+            s.pp(user[i]);
+        }
+    }
+
+    return res;
 }
 
 // Fast Fancy printing
@@ -138,11 +174,12 @@ int main(){
     while (true){
         ffp("->noxCommand in <" + current_path + ">\n$ ");
 
-        vector < string > cmds = rfu();
+        vector < vector < string > > cmds = rfu();
 
-        int ln = user.length();
-        for (int i = 0 ; i < n ; i ++){
+        for (int x = 0 ; x < cmds.size(); x ++){
+            vector < string > now = cmds[x]; int n = now.size();
 
+            pvec(now); nl;
         }
     }
 
