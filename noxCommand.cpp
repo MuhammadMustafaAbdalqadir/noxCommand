@@ -171,7 +171,7 @@ int main(){
     ffp("-.");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
-    add_in_bad("\n");
+    add_in_bad("\n\t");
 
 
     while (true){
@@ -183,7 +183,8 @@ int main(){
             vector < string > now = cmds[x]; int n = now.size();
 
             if (now[0] == "clear"){
-                system("CLS");
+                if (n == 1) system("CLS");
+                else ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
             }
             else if (now[0] == "list"){
                 if (n == 1){
