@@ -7,6 +7,8 @@
 #include <dirent.h>
 #include <tchar.h>
 #include <vector>
+#include <string.h>
+#include <sstream>
 
 #define pp push_back
 #define nl printf("\n")
@@ -18,6 +20,13 @@ using namespace std;
 int bad[100000] = { 0 };
 
 string current_path, user;
+
+bool is_dir_wrong(string str){
+    const char *path = str.c_str();
+    struct dirent *entry;
+    DIR *dir = opendir(path);
+    int is = (dir == NULL); return is;
+}
 
 vector < string > list_dir(string str){
     vector < string > res;
@@ -63,6 +72,12 @@ string prune(string str){
         res.pp(str[i]);
 
     return res;
+}
+
+string get_name_or_path(string str){
+    string res; int n = str.length();
+    for (int i = 1 ; i < (n-1); i ++)
+        res.pp(str[i]); return res;
 }
 
 // -----------------//}
@@ -130,32 +145,19 @@ void get_home_dir(){
     current_path = getenv("USERPROFILE");
 }
 
-void print_in_dir(vector < string > v){
+void print_in_the_dir(vector < string > v){
     for (int i = 0 ; i < v.size(); i ++)
         ffp("-->" + v[i] + "\n");
 }
 
-/*
-        if (user == "clear"){
-            system("CLS");
-        }
-        else if (user == "list"){
-            print_in_dir(  list_dir( current_path )  );   nl;
-        }
-        else if (user == "change"){
-
-        }
-        else if (user == "help"){
-            ffp("-->Coming Soon!\n"); nl;
-        }
-        else {
-            ffp("-->Something gone wrong dude!\n"); nl;
-        }
-*/
-
 void add_in_bad(string str){
     for (int i = 0 ; i < str.size(); i ++)
         bad[str[i]] = 1;
+}
+
+string toString(int n){
+    string res; stringstream ss;
+    ss << n; ss >> res; return res;
 }
 
 int main(){
@@ -165,7 +167,8 @@ int main(){
 
     ffp("noxCommand [Version 1.0]\n");
     ffp("(c) 2017 noxhollow (MuhammadMustafa). All rights reserved.\n\n");
-    ffp("Available commands <list, search, change, create, rename, move, copy, delete, clear, help>\n");
+    ffp("Available commands <list, search, change, create, rename, move, copy, delete, clear, help, exit>\n");
+    ffp("-.");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
     add_in_bad("\n");
@@ -179,7 +182,40 @@ int main(){
         for (int x = 0 ; x < cmds.size(); x ++){
             vector < string > now = cmds[x]; int n = now.size();
 
-            pvec(now); nl;
+            if (now[0] == "clear"){
+                system("CLS");
+            }
+            else if (now[0] == "list"){
+                if (n == 1){
+                    print_in_the_dir(  list_dir( current_path )  );   nl;
+                }
+                else if (n == 2){
+                    if (now[1][0] == '<' && now[1].back() == '>'){
+                        string p = get_name_or_path(now[1]);
+                        if (is_dir_wrong(p)){
+                            ffp("-->Path is wrong in command number " + toString(x+1) + "!\n"); nl;
+                        }
+                        else {
+                            print_in_the_dir(  list_dir( p )  );   nl;
+                        }
+                    }
+                    else {
+                        ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                    }
+                }
+                else {
+                    ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                }
+            }
+            else if (now[0] == "change"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+            else if (now[0] == "help"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+            else {
+                ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+            }
         }
     }
 
