@@ -191,7 +191,7 @@ bool del_dir_if_empty(string path){ // make sure that the dir exists ***
     else return false;
 }
 
-// can used for copying, renaming, moving, ...files
+// can use for copying, renaming, moving, ...files
 bool copy_file(string from, string to){ // make sure that everything is ok ***
     return CopyFile( from.c_str(), to.c_str(), FALSE );
 }
