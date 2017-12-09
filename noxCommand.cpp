@@ -166,14 +166,28 @@ string toString(int n){
     ss << n; ss >> res; return res;
 }
 
+void make_file(string path, string name){ // make sure path is valid dir path***
+    ifstream in; in.open(path + "\\" + name);
+    if(in.fail()){
+        ofstream test(path + "\\" + name); test.close();
+    }
+    in.close();
+}
+
+void make_dir(string path, string name){ // make sure path is valid dir path***
+    path += ("\\" + name);
+    if(!CreateDirectory(path.c_str() ,NULL)) return;
+}
+
+
 int main(){
 
     system("color A");
     get_home_dir();
 
     ffp("noxCommand [Version 1.0]\n");
-    ffp("(c) 2017 noxhollow (MuhammadMustafa). All rights reserved.\n\n");
-    ffp("Available commands <list, search, go, create, rename, move, copy, delete, clear, help, exit>\n");
+    ffp("(c) 2017 noxhollow (Muhammad Mustafa). All rights reserved.\n\n");
+    ffp("Available commands <list, search, go, make, rename, move, copy, delete, clear, help, exit>\n");
     ffp("-.");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
@@ -263,9 +277,14 @@ int main(){
                 }
             }
 
+            else if (now[0] == "make"){
+                /////////
+            }
+
             else if (now[0] == "help"){
                 ffp("-->Coming Soon!\n"); nl;
             }
+
             else {
                 ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
             }
