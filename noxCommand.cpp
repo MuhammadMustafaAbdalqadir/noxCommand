@@ -232,17 +232,18 @@ int main(){
 
     ffp("noxCommand [Version 1.0]\n");
     ffp("(c) 2017 noxhollow (Muhammad Mustafa). All rights reserved.\n\n");
-    ffp("Available commands <list, search, go, make, rename, move, copy, del, clear, help, exit>\n");
+    ffp("Available commands <list, search, go, make, rename, copy, cut, del, clear, help, exit>\n");
     ffp("-.\n");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
-    add_in_bad("\n\t");
+    add_in_bad("\n\t"); int CON = 1;
 
 
 
 
 
-    while (true){
+    while (CON){
+
         ffp("->noxCommand in <" + current_path + ">\n$ ");
 
         vector < vector < string > > cmds = rfu();
@@ -497,10 +498,57 @@ int main(){
                     }
             }
 
+
+
+
+
+
+
+            else if (now[0] == "copy"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+
+
+
+
+
+            else if (now[0] == "cut"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+
+
+
+
+            else if (now[0] == "rename"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+
+
+
+
+
+            else if (now[0] == "search"){
+                ffp("-->Coming Soon!\n"); nl;
+            }
+
+
+
+
             else if (now[0] == "help"){
                     // -help <command_name>.
                 ffp("-->Coming Soon!\n"); nl;
             }
+
+
+
+
+            else if (now[0] == "exit"){
+                //-exit.
+                CON = 0; break;
+            }
+
+
+
 
             else {
                 wrong(x+1); nl;
