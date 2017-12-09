@@ -201,6 +201,8 @@ bool copy_file(string from, string to){ // make sure that everything is ok ***
     return CopyFile( from.c_str(), to.c_str(), FALSE );
 }
 
+
+
 inline void wrong(int n){
     ffp("-->Something gone wrong with command number " + toString(n) + "!\n");
 }
@@ -208,6 +210,19 @@ inline void wrong(int n){
 inline void wrong_path(int n){
     ffp("-->Path is wrong in command number " + toString(n) + "!\n");
 }
+
+inline void file_deleted_msg(int n){
+    ffp("-->File deleted successfully in command number " + toString(n) + "!\n");
+}
+
+inline void file_not_deleted_msg(int n){
+    ffp("-->Something gone wrong with deleting in command number " + toString(n) + "!\n");
+}
+
+inline void dir_deleted_msg(int n){
+    ffp("-->Directory deleted successfully in command number " + toString(n) + "!\n");
+}
+
 
 
 int main(){
@@ -217,11 +232,14 @@ int main(){
 
     ffp("noxCommand [Version 1.0]\n");
     ffp("(c) 2017 noxhollow (Muhammad Mustafa). All rights reserved.\n\n");
-    ffp("Available commands <list, search, go, make, rename, move, copy, delete, clear, help, exit>\n");
+    ffp("Available commands <list, search, go, make, rename, move, copy, del, clear, help, exit>\n");
     ffp("-.\n");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
     add_in_bad("\n\t");
+
+
+
 
 
     while (true){
@@ -230,12 +248,20 @@ int main(){
         vector < vector < string > > cmds = rfu();
 
         for (int x = 0 ; x < cmds.size(); x ++){
+
             vector < string > now = cmds[x]; int n = now.size();
+
+            //pvec(now); cout << n << " "; nl;
+
 
             if (now[0] == "clear"){
                 if (n == 1) system("CLS");
                 else { wrong(x+1); nl; }
             }
+
+
+
+
 
             else if (now[0] == "list"){
                     /*
@@ -263,6 +289,10 @@ int main(){
                     wrong(x+1); nl;
                 }
             }
+
+
+
+
 
             else if (now[0] == "go"){
                     /*
@@ -316,6 +346,10 @@ int main(){
                     wrong(x+1); nl;
                 }
             }
+
+
+
+
 
             else if (now[0] == "make"){
                 /*
@@ -385,6 +419,82 @@ int main(){
                 else {
                     wrong(x+1); nl;
                 }
+            }
+
+
+
+
+
+            else if (now[0] == "del"){
+                    /*
+                        -del file <name>
+                        -del file <path> <name>
+                        -del dir <name>
+                        -del dir <path> <name>
+                    */
+                    if (n == 3){
+                        if (now[1] == "file"){
+                            if (is_name_or_path(now[2])){
+                                int is = del_file(current_path + "\\" + get_name_or_path(now[2]));
+                                if (is == 1) { file_deleted_msg(x+1); nl; }
+                                else { file_not_deleted_msg(x+1); nl; }
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else if (now[1] == "dir"){ //need some improvments***
+                            if (is_name_or_path(now[2])){
+                                int is = del_dir_if_empty(current_path + "\\" + get_name_or_path(now[2]));
+                                if (is == 1) { dir_deleted_msg(x+1); nl; }
+                                else { file_not_deleted_msg(x+1); nl; }
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else if (n == 4){
+                        if (now[1] == "file"){
+                            if (is_name_or_path(now[2])){
+                                if (is_name_or_path(now[3])){
+                                    int is = del_file(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
+                                    if (is == 1) { file_deleted_msg(x+1); nl; }
+                                    else { file_not_deleted_msg(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else if (now[1] == "dir"){ //need some improvments***
+                            if (is_name_or_path(now[2])){
+                                if (is_name_or_path(now[3])){
+                                    int is = del_dir_if_empty(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
+                                    if (is == 1) { dir_deleted_msg(x+1); nl; }
+                                    else { file_not_deleted_msg(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
             }
 
             else if (now[0] == "help"){
