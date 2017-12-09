@@ -9,6 +9,7 @@
 #include <vector>
 #include <string.h>
 #include <sstream>
+#include <stack>
 
 #define pp push_back
 #define nl printf("\n")
@@ -20,6 +21,7 @@ using namespace std;
 int bad[100000] = { 0 };
 
 string current_path, user;
+stack < string > st;
 
 bool is_dir_wrong(string str){
     const char *path = str.c_str();
@@ -145,6 +147,10 @@ void get_home_dir(){
     current_path = getenv("USERPROFILE");
 }
 
+string ret_home_dir(){
+    return getenv("USERPROFILE");
+}
+
 void print_in_the_dir(vector < string > v){
     for (int i = 0 ; i < v.size(); i ++)
         ffp("-->" + v[i] + "\n");
@@ -167,7 +173,7 @@ int main(){
 
     ffp("noxCommand [Version 1.0]\n");
     ffp("(c) 2017 noxhollow (MuhammadMustafa). All rights reserved.\n\n");
-    ffp("Available commands <list, search, change, create, rename, move, copy, delete, clear, help, exit>\n");
+    ffp("Available commands <list, search, go, create, rename, move, copy, delete, clear, help, exit>\n");
     ffp("-.");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
@@ -186,6 +192,7 @@ int main(){
                 if (n == 1) system("CLS");
                 else ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
             }
+
             else if (now[0] == "list"){
                 if (n == 1){
                     print_in_the_dir(  list_dir( current_path )  );   nl;
@@ -208,9 +215,54 @@ int main(){
                     ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
                 }
             }
-            else if (now[0] == "change"){
-                ffp("-->Coming Soon!\n"); nl;
+
+            else if (now[0] == "go"){
+                if (n == 2){
+                    if (now[1] == "prev"){
+                        if (st.empty()){
+                            ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                        }
+                        else {
+                            current_path = st.top();
+                            st.pop();
+                        }
+                    }
+                    else if (now[1] == "home"){
+                        if (ret_home_dir() != current_path){
+                            st.push(current_path);
+                            current_path = ret_home_dir();
+                        }
+                    }
+                    else if (now[1][0] == '<' && now[1].back() == '>'){
+                        string p = get_name_or_path(now[1]);
+                        if (is_dir_wrong(p)){
+                                string pp = current_path + "\\" + p;
+                            if (is_dir_wrong(pp)){
+                                ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                            }
+                            else {
+                                if (pp != current_path){
+                                    st.push(current_path);
+                                    current_path = pp;
+                                }
+                            }
+                        }
+                        else {
+                            if (p != current_path){
+                                st.push(current_path);
+                                current_path = p;
+                            }
+                        }
+                    }
+                    else {
+                        ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                    }
+                }
+                else {
+                    ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                }
             }
+
             else if (now[0] == "help"){
                 ffp("-->Coming Soon!\n"); nl;
             }
