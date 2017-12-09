@@ -179,15 +179,20 @@ void make_dir(string path, string name){ // make sure path is valid dir path***
     if(!CreateDirectory(path.c_str() ,NULL)) return;
 }
 
-bool del_file(string path){
+bool del_file(string path){ //***
     if(remove(path.c_str()) != 0)
         return false;
     else return true;
 }
 
-bool del_dir_if_empty(string path){ // make sure that the dir exists
+bool del_dir_if_empty(string path){ // make sure that the dir exists ***
     if(_rmdir(path.c_str()) != -1) return true;
     else return false;
+}
+
+// can used for copying, renaming, moving, ...files
+bool copy_file(string from, string to){ // make sure that everything is ok ***
+    return CopyFile( from.c_str(), to.c_str(), FALSE );
 }
 
 
@@ -199,7 +204,7 @@ int main(){
     ffp("noxCommand [Version 1.0]\n");
     ffp("(c) 2017 noxhollow (Muhammad Mustafa). All rights reserved.\n\n");
     ffp("Available commands <list, search, go, make, rename, move, copy, delete, clear, help, exit>\n");
-    ffp("-.");
+    ffp("-.\n");
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
     add_in_bad("\n\t");
