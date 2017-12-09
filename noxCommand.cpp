@@ -98,6 +98,8 @@ vector < vector < string > > rfu(){
     user = clean(user);
     user = prune(user);
 
+    // - [command] & [command] & [command] .
+
     int n = user.length(), is_group = 0;
     vector < string > v; string s;
 
@@ -253,6 +255,18 @@ int main(){
             vector < string > now = cmds[x]; int n = now.size();
 
             //pvec(now); cout << n << " "; nl;
+
+            /*
+
+                    0   1   2
+
+                0   go <path>
+
+                1   del file <name>
+
+                2   clear
+
+            */
 
 
             if (now[0] == "clear"){
