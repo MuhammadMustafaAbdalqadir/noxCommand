@@ -179,6 +179,17 @@ void make_dir(string path, string name){ // make sure path is valid dir path***
     if(!CreateDirectory(path.c_str() ,NULL)) return;
 }
 
+bool del_file(string path){
+    if(remove(path.c_str()) != 0)
+        return false;
+    else return true;
+}
+
+bool del_dir_if_empty(string path){ // make sure that the dir exists
+    if(_rmdir(path.c_str()) != -1) return true;
+    else return false;
+}
+
 
 int main(){
 
