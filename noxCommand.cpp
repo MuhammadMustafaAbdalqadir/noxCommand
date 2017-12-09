@@ -10,6 +10,7 @@
 #include <string.h>
 #include <sstream>
 #include <stack>
+#include <direct.h>
 
 #define pp push_back
 #define nl printf("\n")
