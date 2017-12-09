@@ -85,6 +85,11 @@ string get_name_or_path(string str){
 
 // -----------------//}
 
+bool is_name_or_path(string str){
+    int n = str.length();
+    return (str[0] == '<') & (str[n-1] == '>') ;
+}
+
 // read_from_user
 vector < vector < string > > rfu(){
     vector < vector < string > > res;
@@ -241,7 +246,7 @@ int main(){
                     print_in_the_dir(  list_dir( current_path )  );   nl;
                 }
                 else if (n == 2){
-                    if (now[1][0] == '<' && now[1].back() == '>'){
+                    if (is_name_or_path(now[1])){
                         string p = get_name_or_path(now[1]);
                         if (is_dir_wrong(p)){
                             wrong_path(x+1); nl;
@@ -282,7 +287,7 @@ int main(){
                             current_path = ret_home_dir();
                         }
                     }
-                    else if (now[1][0] == '<' && now[1].back() == '>'){
+                    else if (is_name_or_path(now[1])){
                         string p = get_name_or_path(now[1]);
                         if (is_dir_wrong(p)){
                                 string pp = current_path + "\\" + p;
@@ -319,7 +324,67 @@ int main(){
                    -make file <path> <name>.
                    -make file <name>.
                 */
-
+                if (n == 3){
+                    if (now[1] == "dir"){
+                        if (is_name_or_path(now[2])){
+                            make_dir(current_path, get_name_or_path(now[2]));
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else if (now[1] == "file"){
+                        if (is_name_or_path(now[2])){
+                            make_file(current_path, get_name_or_path(now[2]));
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                /*
+                   -make dir <path> <name>.
+                   -make dir <name>.
+                   -make file <path> <name>.
+                   -make file <name>.
+                */
+                else if (n == 4){
+                    if (now[1] == "dir"){
+                        if (is_name_or_path(now[2])){
+                            if (is_name_or_path(now[3])){
+                                make_dir(get_name_or_path(now[2]), get_name_or_path(now[3]));
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else if (now[1] == "file"){
+                        if (is_name_or_path(now[2])){
+                            if (is_name_or_path(now[3])){
+                                make_file(get_name_or_path(now[2]), get_name_or_path(now[3]));
+                            }
+                            else {
+                                wrong(x+1); nl;
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                else {
+                    wrong(x+1); nl;
+                }
             }
 
             else if (now[0] == "help"){
