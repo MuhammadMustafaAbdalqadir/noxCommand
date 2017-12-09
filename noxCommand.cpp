@@ -196,6 +196,14 @@ bool copy_file(string from, string to){ // make sure that everything is ok ***
     return CopyFile( from.c_str(), to.c_str(), FALSE );
 }
 
+inline void wrong(int n){
+    ffp("-->Something gone wrong with command number " + toString(n) + "!\n");
+}
+
+inline void wrong_path(int n){
+    ffp("-->Path is wrong in command number " + toString(n) + "!\n");
+}
+
 
 int main(){
 
@@ -221,10 +229,14 @@ int main(){
 
             if (now[0] == "clear"){
                 if (n == 1) system("CLS");
-                else ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                else { wrong(x+1); nl; }
             }
 
             else if (now[0] == "list"){
+                    /*
+                        -list.
+                        -list <path>.
+                    */
                 if (n == 1){
                     print_in_the_dir(  list_dir( current_path )  );   nl;
                 }
@@ -232,26 +244,32 @@ int main(){
                     if (now[1][0] == '<' && now[1].back() == '>'){
                         string p = get_name_or_path(now[1]);
                         if (is_dir_wrong(p)){
-                            ffp("-->Path is wrong in command number " + toString(x+1) + "!\n"); nl;
+                            wrong_path(x+1); nl;
                         }
                         else {
                             print_in_the_dir(  list_dir( p )  );   nl;
                         }
                     }
                     else {
-                        ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                        wrong(x+1); nl;
                     }
                 }
                 else {
-                    ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                    wrong(x+1); nl;
                 }
             }
 
             else if (now[0] == "go"){
+                    /*
+                        -go prev.
+                        -go home.
+                        -go <path>.
+                        -go <dir_name>.
+                    */
                 if (n == 2){
                     if (now[1] == "prev"){
                         if (st.empty()){
-                            ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                            wrong(x+1); nl;
                         }
                         else {
                             current_path = st.top();
@@ -269,7 +287,7 @@ int main(){
                         if (is_dir_wrong(p)){
                                 string pp = current_path + "\\" + p;
                             if (is_dir_wrong(pp)){
-                                ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                                wrong(x+1); nl;
                             }
                             else {
                                 if (pp != current_path){
@@ -286,24 +304,31 @@ int main(){
                         }
                     }
                     else {
-                        ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                        wrong(x+1); nl;
                     }
                 }
                 else {
-                    ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                    wrong(x+1); nl;
                 }
             }
 
             else if (now[0] == "make"){
-                /////////
+                /*
+                   -make dir <path> <name>.
+                   -make dir <name>.
+                   -make file <path> <name>.
+                   -make file <name>.
+                */
+
             }
 
             else if (now[0] == "help"){
+                    // -help <command_name>.
                 ffp("-->Coming Soon!\n"); nl;
             }
 
             else {
-                ffp("-->Something gone wrong with command number " + toString(x+1) + "!\n"); nl;
+                wrong(x+1); nl;
             }
         }
     }
