@@ -326,6 +326,10 @@ int main(){
 
     while (CON){
 
+
+        if (is_dir_wrong(current_path)) get_home_dir();
+
+
         ffp("->noxCommand in <" + current_path + ">\n$ ");
 
         vector < vector < string > > cmds = rfu();
@@ -530,11 +534,15 @@ int main(){
                                 wrong(x+1); nl;
                             }
                         }
-                        else if (now[1] == "dir"){ //need some improvments***
+                        else if (now[1] == "dir"){
                             if (is_name_or_path(now[2])){
-                                int is = del_dir_if_empty(current_path + "\\" + get_name_or_path(now[2]));
+
+                                pre_clone(); clone(current_path + "\\" + get_name_or_path(now[2]));
+                                   delete_the_tree(current_path + "\\" + get_name_or_path(now[2]));
+
+                                /*int is = del_dir_if_empty(current_path + "\\" + get_name_or_path(now[2]));
                                 if (is == 1) { dir_deleted_msg(x+1); nl; }
-                                else { file_not_deleted_msg(x+1); nl; }
+                                else { file_not_deleted_msg(x+1); nl; }*/
                             }
                             else {
                                 wrong(x+1); nl;
@@ -560,12 +568,16 @@ int main(){
                                 wrong(x+1); nl;
                             }
                         }
-                        else if (now[1] == "dir"){ //need some improvments***
+                        else if (now[1] == "dir"){
                             if (is_name_or_path(now[2])){
                                 if (is_name_or_path(now[3])){
-                                    int is = del_dir_if_empty(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
+
+                                    pre_clone(); clone(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
+                                       delete_the_tree(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
+
+                                    /*int is = del_dir_if_empty(get_name_or_path(now[2]) + "\\" + get_name_or_path(now[3]));
                                     if (is == 1) { dir_deleted_msg(x+1); nl; }
-                                    else { file_not_deleted_msg(x+1); nl; }
+                                    else { file_not_deleted_msg(x+1); nl; }*/
                                 }
                                 else {
                                     wrong(x+1); nl;
