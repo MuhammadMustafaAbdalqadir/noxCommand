@@ -73,17 +73,7 @@ vector < string > list_dir(string str){
     return res2;
 }
 
-/*
 
-int vis[1000000] = { 0 };
-void dfs(int u){
-    if (vis[u]) return; vis[u] = 1;
-    int size = graph[u].size();
-    for (int i = 0; i < size; i ++)
-        dfs(graph[u][i]);
-}
-
-*/
 
 typedef pair < bool, vector < string > > value; // is_dir, sons
 
@@ -124,7 +114,7 @@ bool del_dir_if_empty(string path){ // make sure that the dir exists ***
 }
 
 void delete_the_tree(string path){ //The tree must be updated before using this function!
-    clone(path); //cout << path << endl;
+    clone(path);
 
     value val = tree[path];
     int isdir = val.first;
@@ -346,17 +336,9 @@ int main(){
 
             //pvec(now); cout << n << " "; nl;
 
-            /*
 
-                    0   1   2
 
-                0   go <path>
 
-                1   del file <name>
-
-                2   clear
-
-            */
 
 
             if (now[0] == "clear"){
