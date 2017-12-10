@@ -11,6 +11,7 @@
 #include <sstream>
 #include <stack>
 #include <direct.h>
+#include <unordered_map>
 
 #define pp push_back
 #define nl printf("\n")
@@ -23,6 +24,21 @@ int bad[100000] = { 0 };
 
 string current_path, user;
 stack < string > st;
+
+/*
+
+|__ Data
+| |__ bate5a.exe
+| |__ borto2al.bat
+|__ Images
+  |__ acm
+    |__ acpc15
+      |__ img213.png
+
+
+
+      Tree? -------------------//
+*/
 
 bool is_dir_wrong(string str){
     const char *path = str.c_str();
@@ -43,8 +59,95 @@ vector < string > list_dir(string str){
     while ((entry = readdir(dir)) != NULL)
         res.pp(entry->d_name);
 
-    closedir(dir); return res;
+    closedir(dir);
+
+    vector < string > res2;
+
+    for (int i = 0 ; i < res.size(); i ++){
+        if (res[i] == "." || res[i] == "..") continue;
+        else {
+            res2.pp(res[i]);
+        }
+    }
+
+    return res2;
 }
+
+/*
+
+int vis[1000000] = { 0 };
+void dfs(int u){
+    if (vis[u]) return; vis[u] = 1;
+    int size = graph[u].size();
+    for (int i = 0; i < size; i ++)
+        dfs(graph[u][i]);
+}
+
+*/
+
+typedef pair < bool, vector < string > > value; // is_dir, sons
+
+unordered_map < string, value > tree;
+
+bool is_in_tree(string path){
+    auto it = tree.find(path);
+    if (it == tree.end()) return false;
+    else return true;
+}
+
+void pre_clone(){ tree.clear(); }
+
+void clone(string path){
+    if (is_in_tree(path)) return;
+
+    value val = make_pair(!is_dir_wrong(path), list_dir(path));
+    tree[path] = val;
+
+    if (!val.first) return;
+
+    vector < string > v = val.second;
+    int n = v.size();
+
+    for (int i = 0 ; i < n ; i ++)
+        clone(path + "\\" + v[i]);
+}
+
+bool del_file(string path){ //***
+    if(remove(path.c_str()) != 0)
+        return false;
+    else return true;
+}
+
+bool del_dir_if_empty(string path){ // make sure that the dir exists ***
+    if(_rmdir(path.c_str()) != -1) return true;
+    else return false;
+}
+
+void delete_the_tree(string path){ //The tree must be updated before using this function!
+    clone(path); //cout << path << endl;
+
+    value val = tree[path];
+    int isdir = val.first;
+
+    if (isdir){
+        vector < string > v = val.second;
+        if (v.empty()){
+            del_dir_if_empty(path); return;
+        }
+        else {
+            int n = v.size();
+            for (int i = 0 ; i < n ; i ++)
+                delete_the_tree(path + "\\" + v[i]);
+            del_dir_if_empty(path); return;
+        }
+    }
+    else {
+        del_file(path); return;
+    }
+}
+
+
+//-----------------------------//
 
 
 // prepossessing ---//{
@@ -187,17 +290,6 @@ void make_dir(string path, string name){ // make sure path is valid dir path***
     if(!CreateDirectory(path.c_str() ,NULL)) return;
 }
 
-bool del_file(string path){ //***
-    if(remove(path.c_str()) != 0)
-        return false;
-    else return true;
-}
-
-bool del_dir_if_empty(string path){ // make sure that the dir exists ***
-    if(_rmdir(path.c_str()) != -1) return true;
-    else return false;
-}
-
 // can use for copying, renaming, moving, ...files
 bool copy_file(string from, string to){ // make sure that everything is ok ***
     return CopyFile( from.c_str(), to.c_str(), FALSE );
@@ -226,7 +318,6 @@ inline void dir_deleted_msg(int n){
 }
 
 
-
 int main(){
 
     system("color A");
@@ -239,7 +330,6 @@ int main(){
     ffp("Remember that you can type help then the command name!\n\n\n\n\n\n");
 
     add_in_bad("\n\t"); int CON = 1;
-
 
 
 
@@ -519,7 +609,12 @@ int main(){
 
 
             else if (now[0] == "copy"){
-                ffp("-->Coming Soon!\n"); nl;
+                /*              from    to
+                    -copy file <path> <path>
+                    -copy dir <path> <path>
+                    -copy file <name> <path>
+                    -copy dir <name> <path>
+                */
             }
 
 
@@ -527,7 +622,12 @@ int main(){
 
 
             else if (now[0] == "cut"){
-                ffp("-->Coming Soon!\n"); nl;
+                /*              from    to
+                    -cut file <path> <path>
+                    -cut dir <path> <path>
+                    -cut file <name> <path>
+                    -cut dir <name> <path>
+                */
             }
 
 
