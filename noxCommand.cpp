@@ -117,6 +117,13 @@ bool del_file(string path){ //***
     else return true;
 }
 
+bool rename(string path, string oldname, string newname){
+    int result;
+    result = rename( (path + "\\" + oldname).c_str() , (path + "\\" + newname).c_str() );
+    if ( result == 0 ) return true;
+    else return false;
+}
+
 bool del_dir_if_empty(string path){ // make sure that the dir exists ***
     if(_rmdir(path.c_str()) != -1) return true;
     else return false;
@@ -824,7 +831,22 @@ int main(){
 
 
             else if (now[0] == "rename"){
-                ffp("-->Coming Soon!\n"); nl;
+                /*
+                            from    to
+                    -rename <name> <name>.
+                */
+                if (n == 3){
+                    if (is_name_or_path(now[1]) && is_name_or_path(now[2])){
+                        int is = rename(current_path, get_name_or_path(now[1]), get_name_or_path(now[2]));
+                        if (!is) { wrong(x+1); nl; }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                else {
+                    wrong(x+1); nl;
+                }
             }
 
 
