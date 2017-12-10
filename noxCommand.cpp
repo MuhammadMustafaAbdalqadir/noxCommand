@@ -74,6 +74,15 @@ vector < string > list_dir(string str){
 }
 
 
+void make_dir(string path, string name){ // make sure path is valid dir path***
+    path += ("\\" + name);
+    if(!CreateDirectory(path.c_str() ,NULL)) return;
+}
+
+// can use for copying, renaming, moving, ...files
+bool copy_file(string from, string to){ // make sure that everything is ok ***
+    return CopyFile( from.c_str(), to.c_str(), FALSE );
+}
 
 typedef pair < bool, vector < string > > value; // is_dir, sons
 
@@ -136,6 +145,74 @@ void delete_the_tree(string path){ //The tree must be updated before using this 
     }
 }
 
+void copy_the_tree(string from, string to){    //The tree must be updated before using this function!
+    clone(from);
+
+    value val = tree[from];
+    int isdir = val.first;
+    vector < string > v = val.second; int n = v.size();
+
+    for (int i = 0 ; i < n ; i ++){
+        if (tree[from + "\\" + v[i]].first){ // isdir
+            make_dir(to, v[i]);
+            copy_the_tree(from + "\\" + v[i], to + "\\" + v[i]);
+        }
+        else {
+            copy_file(from + "\\" + v[i], to + "\\" + v[i]);
+        }
+    }
+}
+
+string get_name_of_file(string from){
+    int n = from.length();
+    int start = n - 1;
+    for (int i = (n-1); i >= 0; i --){
+        if (from[i] == '\\') break;
+        start = i;
+    }
+
+    string name;
+    for (int i = start; i < n; i ++){
+        name.pp(from[i]);
+    }
+
+    return name;
+}
+
+// assuming that every thing with paths is okay
+//
+bool copy_dir(string from, string to){
+
+    if (is_dir_wrong(from) || is_dir_wrong(to)) return false;
+
+    int n = from.length();
+    int start = n - 1;
+    for (int i = (n-1); i >= 0; i --){
+        if (from[i] == '\\') break;
+        start = i;
+    }
+
+    string name;
+    for (int i = start; i < n; i ++){
+        name.pp(from[i]);
+    }
+
+    string temp; start--;
+    for (int i = 0 ; i < start; i ++)
+        temp.pp(from[i]);
+
+    from = temp;
+
+    if (!is_dir_wrong(to + "\\" + name)) return false;
+
+    make_dir(to, name);
+
+    pre_clone(); clone(from); clone(to);
+
+    copy_the_tree(from + "\\" + name, to + "\\" + name);
+
+    return true;
+}
 
 //-----------------------------//
 
@@ -275,17 +352,6 @@ void make_file(string path, string name){ // make sure path is valid dir path***
     in.close();
 }
 
-void make_dir(string path, string name){ // make sure path is valid dir path***
-    path += ("\\" + name);
-    if(!CreateDirectory(path.c_str() ,NULL)) return;
-}
-
-// can use for copying, renaming, moving, ...files
-bool copy_file(string from, string to){ // make sure that everything is ok ***
-    return CopyFile( from.c_str(), to.c_str(), FALSE );
-}
-
-
 
 inline void wrong(int n){
     ffp("-->Something gone wrong with command number " + toString(n) + "!\n");
@@ -305,6 +371,13 @@ inline void file_not_deleted_msg(int n){
 
 inline void dir_deleted_msg(int n){
     ffp("-->Directory deleted successfully in command number " + toString(n) + "!\n");
+}
+
+int is_path(string str){
+    int n = str.length(), is = 0;
+    for (int i = 0 ; i < n ; i ++)
+        is |= (str[i] == '\\');
+    return is;
 }
 
 
@@ -609,6 +682,62 @@ int main(){
                     -copy file <name> <path>
                     -copy dir <name> <path>
                 */
+                if (n == 4){
+                    if (now[1] == "file"){
+                        if (is_name_or_path(now[2]) && is_name_or_path(now[3])){
+                            if (is_path(now[2])){
+                                if (is_path(now[3])){
+                                    copy_file(get_name_or_path(now[2]), get_name_or_path(now[3]) + "\\" + get_name_of_file(get_name_or_path(now[2])));
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else { // name
+                                if (is_path(now[3])){
+                                    copy_file(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]) + "\\" + get_name_or_path(now[2]));
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else if (now[1] == "dir"){
+                        if (is_name_or_path(now[2]) && is_name_or_path(now[3])){
+                            if (is_path(now[2])){
+                                if (is_path(now[3])){
+                                    int is = copy_dir(get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    if (!is) { wrong(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else { // name
+                                if (is_path(now[3])){
+                                    int is = copy_dir(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    if (!is) { wrong(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                else {
+                    wrong(x+1); nl;
+                }
             }
 
 
