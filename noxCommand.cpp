@@ -751,6 +751,69 @@ int main(){
                     -cut file <name> <path>
                     -cut dir <name> <path>
                 */
+
+                if (n == 4){
+                    if (now[1] == "file"){
+                        if (is_name_or_path(now[2]) && is_name_or_path(now[3])){
+                            if (is_path(now[2])){
+                                if (is_path(now[3])){
+                                    copy_file(get_name_or_path(now[2]), get_name_or_path(now[3]) + "\\" + get_name_of_file(get_name_or_path(now[2])));
+                                    del_file(get_name_or_path(now[2]));
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else { // name
+                                if (is_path(now[3])){
+                                    copy_file(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]) + "\\" + get_name_or_path(now[2]));
+                                    del_file(current_path + "\\" + get_name_or_path(now[2]));
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else if (now[1] == "dir"){
+                        if (is_name_or_path(now[2]) && is_name_or_path(now[3])){
+                            if (is_path(now[2])){
+                                if (is_path(now[3])){
+
+
+                                    //int is = copy_dir(get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    //if (!is) { wrong(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                            else { // name
+                                if (is_path(now[3])){
+
+
+                                    //int is = copy_dir(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    //if (!is) { wrong(x+1); nl; }
+                                }
+                                else {
+                                    wrong(x+1); nl;
+                                }
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                else {
+                    wrong(x+1); nl;
+                }
             }
 
 
