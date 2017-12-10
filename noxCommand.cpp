@@ -12,6 +12,8 @@
 #include <stack>
 #include <direct.h>
 #include <unordered_map>
+#include <set>
+#include <map>
 
 #define pp push_back
 #define nl printf("\n")
@@ -87,6 +89,7 @@ bool copy_file(string from, string to){ // make sure that everything is ok ***
 typedef pair < bool, vector < string > > value; // is_dir, sons
 
 unordered_map < string, value > tree;
+map < string, vector < string > > names;
 
 bool is_in_tree(string path){
     auto it = tree.find(path);
@@ -94,7 +97,16 @@ bool is_in_tree(string path){
     else return true;
 }
 
-void pre_clone(){ tree.clear(); }
+void store(string name, string path){
+    auto it = names.find(name);
+    if (it == names.end()) {
+        vector < string > temp;
+        names[name] = temp;
+    }
+    names[name].push_back(path);
+}
+
+void pre_clone(){ tree.clear(); names.clear(); }
 
 void clone(string path){
     if (is_in_tree(path)) return;
@@ -108,7 +120,7 @@ void clone(string path){
     int n = v.size();
 
     for (int i = 0 ; i < n ; i ++)
-        clone(path + "\\" + v[i]);
+        store(v[i], path + "\\" + v[i]), clone(path + "\\" + v[i]);
 }
 
 bool del_file(string path){ //***
@@ -359,6 +371,10 @@ void make_file(string path, string name){ // make sure path is valid dir path***
     in.close();
 }
 
+void print_in_the_list(vector < string > v){
+    for (int i = 0 ; i < v.size(); i ++)
+        ffp("-->" + v[i] + "\n");
+}
 
 inline void wrong(int n){
     ffp("-->Something gone wrong with command number " + toString(n) + "!\n");
@@ -854,7 +870,44 @@ int main(){
 
 
             else if (now[0] == "search"){
-                ffp("-->Coming Soon!\n"); nl;
+                /*
+                    -search <name> <path>.
+                */
+                if (n == 3){
+                    if (is_name_or_path(now[1]) && is_name_or_path(now[2])){
+                        string name = get_name_or_path(now[1]);
+                        string path = get_name_or_path(now[2]);
+                        if (!is_path(name) && is_path(path)){
+                            if (is_dir_wrong(path)){
+                                wrong(x+1); nl;
+                            }
+                            else { // here
+                                pre_clone(); clone(path); store(get_name_of_file(path), path);
+
+                                //for (auto itt = names.begin(); itt != names.end(); itt++)
+                                    //cout << (*itt).first << endl;
+
+                                auto it = names.find(name);
+                                if (it == names.end()){
+                                    ffp(name + " not found.\n");
+                                }
+                                else {
+                                    ffp(name + " found in ...\n");
+                                    print_in_the_list(names[name]); nl;
+                                }
+                            }
+                        }
+                        else {
+                            wrong(x+1); nl;
+                        }
+                    }
+                    else {
+                        wrong(x+1); nl;
+                    }
+                }
+                else {
+                    wrong(x+1); nl;
+                }
             }
 
 
