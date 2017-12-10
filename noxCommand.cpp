@@ -782,10 +782,12 @@ int main(){
                         if (is_name_or_path(now[2]) && is_name_or_path(now[3])){
                             if (is_path(now[2])){
                                 if (is_path(now[3])){
-
-
-                                    //int is = copy_dir(get_name_or_path(now[2]), get_name_or_path(now[3]));
-                                    //if (!is) { wrong(x+1); nl; }
+                                    int is = copy_dir(get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    if (!is) { wrong(x+1); nl; }
+                                    else {
+                                        pre_clone(); clone(get_name_or_path(now[2]));
+                                           delete_the_tree(get_name_or_path(now[2]));
+                                    }
                                 }
                                 else {
                                     wrong(x+1); nl;
@@ -793,10 +795,12 @@ int main(){
                             }
                             else { // name
                                 if (is_path(now[3])){
-
-
-                                    //int is = copy_dir(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]));
-                                    //if (!is) { wrong(x+1); nl; }
+                                    int is = copy_dir(current_path + "\\" + get_name_or_path(now[2]), get_name_or_path(now[3]));
+                                    if (!is) { wrong(x+1); nl; }
+                                    else {
+                                        pre_clone(); clone(current_path + "\\" + get_name_or_path(now[2]));
+                                           delete_the_tree(current_path + "\\" + get_name_or_path(now[2]));
+                                    }
                                 }
                                 else {
                                     wrong(x+1); nl;
