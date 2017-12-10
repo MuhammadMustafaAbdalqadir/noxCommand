@@ -614,10 +614,10 @@ int main(){
 
             else if (now[0] == "del"){
                     /*
-                        -del file <name>
-                        -del file <path> <name>
-                        -del dir <name>
-                        -del dir <path> <name>
+                        -del file <name>.
+                        -del file <path> <name>.
+                        -del dir <name>.
+                        -del dir <path> <name>.
                     */
                     if (n == 3){
                         if (now[1] == "file"){
@@ -700,10 +700,10 @@ int main(){
 
             else if (now[0] == "copy"){
                 /*              from    to
-                    -copy file <path> <path>
-                    -copy dir <path> <path>
-                    -copy file <name> <path>
-                    -copy dir <name> <path>
+                    -copy file <path> <path>.
+                    -copy dir <path> <path>.
+                    -copy file <name> <path>.
+                    -copy dir <name> <path>.
                 */
                 if (n == 4){
                     if (now[1] == "file"){
@@ -769,10 +769,10 @@ int main(){
 
             else if (now[0] == "cut"){
                 /*              from    to
-                    -cut file <path> <path>
-                    -cut dir <path> <path>
-                    -cut file <name> <path>
-                    -cut dir <name> <path>
+                    -cut file <path> <path>.
+                    -cut dir <path> <path>.
+                    -cut file <name> <path>.
+                    -cut dir <name> <path>.
                 */
 
                 if (n == 4){
