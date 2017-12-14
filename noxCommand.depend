@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1513213005 source:d:\-  projects\noxcommand\main.cpp
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<fstream>
+	<dirent.h>
+	<windows.h>
+	<dirent.h>
+	<tchar.h>
+	<vector>
+	<string.h>
+	<sstream>
+	<stack>
+	<direct.h>
+	<unordered_map>
+	<set>
+	<map>
+
