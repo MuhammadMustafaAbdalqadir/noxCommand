@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1513213005 source:d:\-  projects\noxcommand\main.cpp
+1513218308 source:d:\-  projects\noxcommand\main.cpp
 	<iostream>
 	<stdlib.h>
 	<stdio.h>
@@ -16,4 +16,42 @@
 	<unordered_map>
 	<set>
 	<map>
+	"Parser.h"
+	"Message.h"
+	"Volume.h"
+
+1513214244 d:\-  projects\noxcommand\parser.h
+
+1513214271 d:\-  projects\noxcommand\message.h
+
+1513220766 d:\-  projects\noxcommand\volume.h
+	<bits/stdc++.h>
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<fstream>
+	<dirent.h>
+	<windows.h>
+	<dirent.h>
+	<tchar.h>
+	<vector>
+	<string.h>
+	<sstream>
+	<stack>
+	<direct.h>
+	<unordered_map>
+	<set>
+	<map>
+	"Parser.h"
+	"Message.h"
+	"Volume.h"
+
+1513214275 source:d:\-  projects\noxcommand\message.cpp
+	"Message.h"
+
+1513214264 source:d:\-  projects\noxcommand\parser.cpp
+	"Parser.h"
+
+1513218122 source:d:\-  projects\noxcommand\volume.cpp
+	"Volume.h"
 

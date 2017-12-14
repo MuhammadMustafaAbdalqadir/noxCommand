@@ -32,6 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Message.cpp" />
+		<Unit filename="Message.h" />
+		<Unit filename="Parser.cpp" />
+		<Unit filename="Parser.h" />
+		<Unit filename="Volume.cpp" />
+		<Unit filename="Volume.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
